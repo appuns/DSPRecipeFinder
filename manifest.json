@@ -1,0 +1,9 @@
+{
+  "name": "DSPRecipeFinder",
+  "version_number": "0.0.1",
+  "website_url": "https://github.com/appuns/DSPRecipeFinder",
+  "description": "Displays a triangle indicating the north. This don't affect achievements or milestones. 北方角を表す三角形を表示します。実績やマイルストーンには影響しません。",
+  "dependencies": [
+    "xiaoye97-BepInEx-5.4.17"
+  ]
+}
