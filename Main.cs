@@ -69,32 +69,77 @@ namespace DSPRecipeFinder
             {
                 return;
             }
-            LogManager.Logger.LogInfo($"----------------------------------------__instance.showingItemId : {__instance.showingItemId}");
-
             recipeStruct recipestruct = recipeDictionary[__instance.showingItemId];
-            LogManager.Logger.LogInfo($"----------------------------------------recipestruct.ResultsCount : {recipestruct.ResultsCount}");
-            LogManager.Logger.LogInfo($"----------------------------------------ResultsCount + ItemsCount : {recipestruct.ResultsCount + recipestruct.ItemsCount}");
+            //解除されていないレシピは削除
+            List<int> tmpItems = new List<int>();
             for (int i = 0; i < recipestruct.ItemsCount; i++)
             {
+                RecipeProto recipeProto = LDB.recipes.Select(recipestruct.Items[i]);
+                if (GameMain.history.recipeUnlocked.Contains(recipeProto.ID))
+                {
+                    tmpItems.Add(recipestruct.Items[i]);
+                }
+
+            }
+
+
+
+
+            //LogManager.Logger.LogInfo($"----------------------------------------__instance.showingItemId : {__instance.showingItemId}");
+            //LogManager.Logger.LogInfo($"----------------------------------------recipestruct.ResultsCount : {recipestruct.ResultsCount}");
+            //LogManager.Logger.LogInfo($"----------------------------------------ResultsCount + ItemsCount : {recipestruct.ResultsCount + recipestruct.ItemsCount}");
+            int maxRow = tmpItems.Count; 
+            int widthMax = 0;
+            int leftWIdthMax = 0;
+            //2列に分けたときの最大行数計算
+          　if (tmpItems.Count > 7)
+            {
+                maxRow = (int)Math.Ceiling((double)tmpItems.Count / 2);                        
+            }
+
+            for (int i = 0; i < tmpItems.Count; i++)
+            {
+                //レシピが解除されていなければスキップ
+
+                //レシピを表示&位置設定
                 if (__instance.recipeEntryArr[recipestruct.ResultsCount + i] == null)
-                   // LogManager.Logger.LogInfo($"----------------------------------------recipestruct.Results[i] : {recipestruct.Results[i]}");
+                // LogManager.Logger.LogInfo($"----------------------------------------recipestruct.Results[i] : {recipestruct.Results[i]}");
                 {
                     __instance.recipeEntryArr[recipestruct.ResultsCount + i] = UnityEngine.Object.Instantiate<UIRecipeEntry>(__instance.recipeEntry, __instance.transform);
                 }
-                __instance.recipeEntryArr[recipestruct.ResultsCount + i].SetRecipe(LDB.recipes.Select(recipestruct.Items[i]));
-                __instance.recipeEntryArr[recipestruct.ResultsCount + i].rectTrans.anchoredPosition = new Vector2(12f, __instance.recipeEntryArr[0].rectTrans.anchoredPosition.y - (float)((recipestruct.ResultsCount + i) * 40 + 13));
+                RecipeProto recipeProto = LDB.recipes.Select(recipestruct.Items[i]);
+                __instance.recipeEntryArr[recipestruct.ResultsCount + i].SetRecipe(recipeProto);
+                if (i < maxRow)
+                {
+                    __instance.recipeEntryArr[recipestruct.ResultsCount + i].rectTrans.anchoredPosition = new Vector2(12f, __instance.recipeEntryArr[0].rectTrans.anchoredPosition.y - (float)((recipestruct.ResultsCount + i) * 40 + 13));
+                }
+                else
+                {
+                    __instance.recipeEntryArr[recipestruct.ResultsCount + i].rectTrans.anchoredPosition = new Vector2(leftWIdthMax * 40 + 30 + 12f, __instance.recipeEntryArr[0].rectTrans.anchoredPosition.y - (float)((recipestruct.ResultsCount + i - maxRow) * 40 + 13));
+                }
                 __instance.recipeEntryArr[recipestruct.ResultsCount + i].gameObject.SetActive(true);
+                //最大幅の更新
+                int width = recipeProto.Results.Length + recipeProto.Items.Length + 1;
+                if (width > widthMax)
+                {
+                    widthMax = width;
+                }
+                if (i == maxRow - 1)
+                {
+                    leftWIdthMax = widthMax;
+                    widthMax = 0;
+                }
             }
 
             //ラインの複製と配置
-            //if (incSepLine2obj == null)
+            //if (tmpItems.Count > 0)
             //{
-            //    incSepLine2obj = Instantiate(__instance.incSepLine.gameObject, __instance.incSepLine.transform.parent);
-            //}
-            //if (num != 0)
-            //{
-            //    incSepLine2obj.transform.localPosition = new Vector2(12f, __instance.recipeEntryArr[0].rectTrans.anchoredPosition.y - (float)(resultNum * 40 + 10));
-            //    LogManager.Logger.LogInfo("--------------------------------  incSepLine2obj.transform.localPosition.y : " + incSepLine2obj.transform.localPosition.y);
+            //    if (incSepLine2obj == null)
+            //    {
+            //        incSepLine2obj = Instantiate(__instance.incSepLine.gameObject, __instance.incSepLine.transform.parent);
+            //    }
+            //    incSepLine2obj.transform.localPosition = new Vector2(12f, __instance.recipeEntryArr[recipestruct.ResultsCount].rectTrans.anchoredPosition.y +8f);
+            //    //LogManager.Logger.LogInfo("--------------------------------  incSepLine2obj.transform.localPosition.y : " + incSepLine2obj.transform.localPosition.y);
             //    incSepLine2obj.SetActive(true);
             //}
             //else
@@ -102,18 +147,17 @@ namespace DSPRecipeFinder
             //    incSepLine2obj.SetActive(false);
             //}
 
-            ////ウインドウのサイズの調整
-            //int itemsNum = num;
-            //float x;
-            //if (width * 40 + 30 > __instance.trans.sizeDelta.x)
-            //{
-            //    x = (float)(width * 40 + 30);
-            //}
-            //else
-            //{
-            //    x = __instance.trans.sizeDelta.x;
-            //}
-            //__instance.trans.sizeDelta = new Vector2(x, (float)(__instance.trans.sizeDelta.y + itemsNum * 40 + 20));
+            //ウインドウのサイズの調整
+            float x = (leftWIdthMax + widthMax) * 40 + 30;
+            if (leftWIdthMax>0)
+            {
+                x += 30;
+            }
+            if (x < __instance.trans.sizeDelta.x)
+            {
+                x = __instance.trans.sizeDelta.x;
+            }
+            __instance.trans.sizeDelta = new Vector2(x, (float)(__instance.trans.sizeDelta.y + maxRow * 40 + 20));
 
 
         }
