@@ -4,12 +4,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("DspFontPatcher")]
+[assembly: AssemblyTitle("DSPRecipeFinder")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("DspFontPatcher")]
-[assembly: AssemblyCopyright("Copyright ©  2021")]
+[assembly: AssemblyProduct("DSPRecipeFinder")]
+[assembly: AssemblyCopyright("Appun")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if  __instance project is exposed to COM
-[assembly: Guid("81DF3045-8007-4F6A-AAF6-903139D85B6C")]
+[assembly: Guid("BC522B9F-75D9-4E5E-93BD-978B0B3C5E30")]
 
 // Version information for an assembly consists of the following four values:
 //

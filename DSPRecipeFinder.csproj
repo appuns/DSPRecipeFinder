@@ -35,6 +35,9 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\Libs\0Harmony.dll</HintPath>

@@ -1,8 +1,8 @@
 {
   "name": "DSPRecipeFinder",
-  "version_number": "0.0.1",
+  "version_number": "0.0.2",
   "website_url": "https://github.com/appuns/DSPRecipeFinder",
-  "description": "Displays a triangle indicating the north. This don't affect achievements or milestones. 北方角を表す三角形を表示します。実績やマイルストーンには影響しません。",
+  "description": "Hover over an item to see recipes that use that item as a material. This don't affect achievements or milestones. アイテムにカーソルを合わせると、そのアイテムを素材として使用するレシピも表示されます。実績やマイルストーンには影響しません。",
   "dependencies": [
     "xiaoye97-BepInEx-5.4.17"
   ]

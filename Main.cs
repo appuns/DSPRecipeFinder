@@ -28,7 +28,7 @@ using xiaoye97;
 namespace DSPRecipeFinder
 {
 
-    [BepInPlugin("Appun.DSP.plugin.RecipeFinder", "DSPRecipeFinder", "0.0.1")]
+    [BepInPlugin("Appun.DSP.plugin.RecipeFinder", "DSPRecipeFinder", "0.0.2")]
     [BepInProcess("DSPGAME.exe")]
 
     [HarmonyPatch]
@@ -64,6 +64,10 @@ namespace DSPRecipeFinder
         {
             //UIItemTip storageWindow = UIRoot.instance.uiGame.itemupTips;
             //__instance.eventLock = true
+            if (UIRoot.instance.uiGame.signalPicker.gameObject.activeSelf || UIRoot.instance.uiGame.recipePicker.gameObject.activeSelf || UIRoot.instance.uiGame.itemPicker.gameObject.activeSelf)
+            {
+                return;
+            }
 
             if (!recipeDictionary.ContainsKey(__instance.showingItemId))
             {
@@ -107,8 +111,47 @@ namespace DSPRecipeFinder
                 {
                     __instance.recipeEntryArr[recipestruct.ResultsCount + i] = UnityEngine.Object.Instantiate<UIRecipeEntry>(__instance.recipeEntry, __instance.transform);
                 }
-                RecipeProto recipeProto = LDB.recipes.Select(recipestruct.Items[i]);
-                __instance.recipeEntryArr[recipestruct.ResultsCount + i].SetRecipe(recipeProto);
+                RecipeProto recipeProto = LDB.recipes.Select(tmpItems[i]);
+                RecipeProto newRecipeProto = new RecipeProto ();
+                //LogManager.Logger.LogInfo($"----------------------------------------tmpItems[i] : {tmpItems[i]}");
+
+                //該当アイテムを素材リストの先頭に移動
+                newRecipeProto.ResultCounts = recipeProto.ResultCounts;
+                newRecipeProto.Results = recipeProto.Results;
+                newRecipeProto.ItemCounts = new int[recipeProto.ItemCounts.Length];
+                for (int j = 0; j < recipeProto.ItemCounts.Length; j++)
+                {
+                    newRecipeProto.ItemCounts[j] = recipeProto.ItemCounts[j];
+                }
+                newRecipeProto.Items = new int[recipeProto.Items.Length];
+                for(int j = 0; j < recipeProto.Items.Length; j++)
+                {
+                    newRecipeProto.Items[j] = recipeProto.Items[j];
+                }
+                newRecipeProto.Type = recipeProto.Type;
+                newRecipeProto.TimeSpend = recipeProto.TimeSpend;
+                newRecipeProto.Type = recipeProto.Type;
+
+                for(int j = 0; j < newRecipeProto.Items.Length; j++)
+                {
+                    if(newRecipeProto.Items[j] == __instance.showingItemId)
+                    {
+                        //int tmpNUm = newRecipeProto.Items[0];
+                        //LogManager.Logger.LogInfo($"----------------------------------------newRecipeProto.ID : {newRecipeProto.ID}");
+
+                        newRecipeProto.Items[0] = recipeProto.Items[j];
+                        newRecipeProto.Items[j] = recipeProto.Items[0];
+                        newRecipeProto.ItemCounts[0] = recipeProto.ItemCounts[j];
+                        newRecipeProto.ItemCounts[j] = recipeProto.ItemCounts[0];
+                        break;
+                    }
+                }
+
+
+
+
+
+                __instance.recipeEntryArr[recipestruct.ResultsCount + i].SetRecipe(newRecipeProto);
                 if (i < maxRow)
                 {
                     __instance.recipeEntryArr[recipestruct.ResultsCount + i].rectTrans.anchoredPosition = new Vector2(12f, __instance.recipeEntryArr[0].rectTrans.anchoredPosition.y - (float)((recipestruct.ResultsCount + i) * 40 + 13));
