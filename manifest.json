@@ -1,6 +1,6 @@
 {
   "name": "DSPRecipeFinder",
-  "version_number": "0.0.2",
+  "version_number": "0.0.4",
   "website_url": "https://github.com/appuns/DSPRecipeFinder",
   "description": "Hover over an item to see recipes that use that item as a material. This don't affect achievements or milestones. アイテムにカーソルを合わせると、そのアイテムを素材として使用するレシピも表示されます。実績やマイルストーンには影響しません。",
   "dependencies": [

@@ -23,6 +23,10 @@ If you have any problems or suggestions, please contact DISCORD MSP Modding serv
 不具合、改善案などありましたら、DISCORD「DysonSphereProgram_Jp」サーバー**Appun#8284**までお願いします。<br>
 <br>
 ## Change Log　更新履歴
+### v0.0.4
+- Fixed an error when returning to the main menu. メインメニューへ戻るときのエラーを解消しました。
+### v0.0.3
+- Fixed some errors. いくつかのエラーを解消しました。
 ### v0.0.2
 - Fixed an error. エラーを解消しました。
 ### v0.0.1
