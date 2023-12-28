@@ -28,7 +28,7 @@ using xiaoye97;
 namespace DSPRecipeFinder
 {
 
-    [BepInPlugin("Appun.DSP.plugin.RecipeFinder", "DSPRecipeFinder", "0.0.4")]
+    [BepInPlugin("Appun.DSP.plugin.RecipeFinder", "DSPRecipeFinder", "0.0.5")]
     [BepInProcess("DSPGAME.exe")]
 
     [HarmonyPatch]
